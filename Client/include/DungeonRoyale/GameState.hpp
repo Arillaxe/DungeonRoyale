@@ -22,3 +22,7 @@ struct GameState {
   PlayerPos player_positions[10];
 };
 
+struct PlayerPacket {
+  PlayerAction action;
+};
+

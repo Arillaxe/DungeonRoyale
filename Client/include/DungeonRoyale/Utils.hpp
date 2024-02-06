@@ -17,6 +17,7 @@ private:
 
   static Uint32 lastTime;
   static int frameCount;
+  static int fps;
 };
 
 #endif // !UTILS_HPP
