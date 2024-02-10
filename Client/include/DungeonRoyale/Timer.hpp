@@ -6,7 +6,8 @@
 class Timer
 {
 public:
-  Timer();
+  Timer() {};
+
   Timer(int milliseconds);
 
   void tick();
@@ -15,11 +16,11 @@ public:
   void reset(int milliseconds);
 
 private:
-  int _milliseconds;
-  int timeLeft;
-  Uint64 now;
-  Uint64 last;
-  double deltaTime;
+  int _milliseconds = 0;
+  int timeLeft = 0;
+  Uint64 now = 0;
+  Uint64 last = 0;
+  double deltaTime = 0;
 };
 
 #endif // !TIMER_HPP

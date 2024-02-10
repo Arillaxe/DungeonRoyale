@@ -32,6 +32,12 @@
     <ClCompile Include="src\Timer.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="src\Player2.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Network.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="include\DungeonRoyale\Player.hpp">
@@ -71,6 +77,12 @@
       <Filter>Source Files</Filter>
     </ClInclude>
     <ClInclude Include="include\DungeonRoyale\GameState.hpp">
+      <Filter>Source Files</Filter>
+    </ClInclude>
+    <ClInclude Include="include\DungeonRoyale\Player2.hpp">
+      <Filter>Source Files</Filter>
+    </ClInclude>
+    <ClInclude Include="include\DungeonRoyale\Network.hpp">
       <Filter>Source Files</Filter>
     </ClInclude>
   </ItemGroup>

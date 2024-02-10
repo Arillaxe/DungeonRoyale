@@ -1,13 +1,13 @@
-#ifndef PLAYER_HPP
-#define PLAYER_HPP
+#ifndef PLAYER2_HPP
+#define PLAYER2_HPP
 
 #include <DungeonRoyale/Timer.hpp>
 #include <SDL2/SDL_rect.h>
 #include <SDL2/SDL_render.h>
 
-struct Player {
+struct Player2 {
 public:
-  Player(SDL_Rect _rect, SDL_Texture* _texture, SDL_Rect _srcRect);
+  Player2(float _x, float _y, float _w, float _h, SDL_Texture* _texture, SDL_Rect _srcRect);
 
   void tick();
   void draw();
@@ -16,7 +16,11 @@ public:
 
   bool flipped = false;
   float speed = 200;
-  SDL_Rect rect;
+  float x;
+  float y;
+  int w;
+  int h;
+
 
 private:
   SDL_Texture* texture;
