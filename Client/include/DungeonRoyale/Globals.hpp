@@ -4,6 +4,7 @@
 #include <SDL2/SDL.h>
 
 #include <DungeonRoyale/Camera.hpp>
+#include <DungeonRoyale/GameState.hpp>
 
 struct Globals {
   int SCREEN_WIDTH;
@@ -12,6 +13,8 @@ struct Globals {
   bool DRAW_GRID;
 
   Camera camera;
+
+  PlayerPos playerPos;
 
   SDL_Window* window = nullptr;
   SDL_Renderer* renderer = nullptr;

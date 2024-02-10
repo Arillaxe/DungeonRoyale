@@ -13,6 +13,13 @@
 #include <DungeonRoyale/Game.hpp>
 #include <DungeonRoyale/Network.hpp>
 
+struct PlayerInputStates {
+  bool up = false;
+  bool left = false;
+  bool down = false;
+  bool right = false;
+};
+
 int main(int argc, char* argv[]) {
   Game::init();
 
@@ -30,15 +37,13 @@ int main(int argc, char* argv[]) {
     SDL_Rect { 0, 320, 12, 15 }
   );
 
-  Network::init("127.0.0.1", 8888);
+  PlayerInputStates inputs;
 
-  PlayerPacket packet = PlayerPacket{ PlayerAction::MOVE_UP_END };
+  Network::startReceiveThread();
 
   while (!quit) {
     Utils::updateDeltaTime();
     Utils::updateFPS();
-
-    Network::sendToServer(packet);
 
     std::string fps = "FPS: " + std::to_string(Utils::getFPS());
     SDL_SetWindowTitle(globals.window, fps.c_str());
@@ -60,10 +65,56 @@ int main(int argc, char* argv[]) {
       currentKeyStates[SDL_SCANCODE_S] ||
       currentKeyStates[SDL_SCANCODE_W];
 
+    PlayerInputStates inputsNew;
+
+    inputsNew.up = currentKeyStates[SDL_SCANCODE_W];
+    inputsNew.left = currentKeyStates[SDL_SCANCODE_A];
+    inputsNew.down = currentKeyStates[SDL_SCANCODE_S];
+    inputsNew.right = currentKeyStates[SDL_SCANCODE_D];
+
+    PlayerAction action = PlayerAction::IDLE;
+    if (!inputs.right && inputsNew.right) {
+      action = PlayerAction::MOVE_RIGHT_START;
+    }
+    else if (inputs.right && !inputsNew.right) {
+      action = PlayerAction::MOVE_RIGHT_END;
+    } else if (!inputs.left && inputsNew.left) {
+      action = PlayerAction::MOVE_LEFT_START;
+    }
+    else if (inputs.left && !inputsNew.left) {
+      action = PlayerAction::MOVE_LEFT_END;
+    } else if (!inputs.up && inputsNew.up) {
+      action = PlayerAction::MOVE_UP_START;
+    }
+    else if (inputs.up && !inputsNew.up) {
+      action = PlayerAction::MOVE_UP_END;
+    } else if (!inputs.down && inputsNew.down) {
+      action = PlayerAction::MOVE_DOWN_START;
+    }
+    else if (inputs.down && !inputsNew.down) {
+      action = PlayerAction::MOVE_DOWN_END;
+    }
+
+    if (action != PlayerAction::IDLE) {
+      PlayerPacket packet = PlayerPacket{ action };
+      Network::sendToServer(packet);
+
+      std::cout << "sent packet" << "\n";
+    }
+
+    inputs.up = inputsNew.up;
+    inputs.left = inputsNew.left;
+    inputs.down = inputsNew.down;
+    inputs.right = inputsNew.right;
+
     player.tick();
 
-    player.x += (currentKeyStates[SDL_SCANCODE_D] - currentKeyStates[SDL_SCANCODE_A]) * player.speed * Utils::getDeltaTime();
-    player.y += (currentKeyStates[SDL_SCANCODE_S] - currentKeyStates[SDL_SCANCODE_W]) * player.speed * Utils::getDeltaTime();
+   /* player.x += (currentKeyStates[SDL_SCANCODE_D] - currentKeyStates[SDL_SCANCODE_A]) * player.speed * Utils::getDeltaTime();
+    player.y += (currentKeyStates[SDL_SCANCODE_S] - currentKeyStates[SDL_SCANCODE_W]) * player.speed * Utils::getDeltaTime();*/
+
+    player.x = globals.playerPos.x;
+    player.y = globals.playerPos.y;
+
 
     //globals.camera.x = player.rect.x;
     //globals.camera.y = player.rect.y;
@@ -78,6 +129,8 @@ int main(int argc, char* argv[]) {
 
     SDL_RenderPresent(globals.renderer);
   }
+
+  Network::stopReceiveThread();
 
   Game::cleanUp(atlas);
 
