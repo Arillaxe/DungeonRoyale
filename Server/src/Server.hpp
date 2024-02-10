@@ -13,6 +13,15 @@ namespace Network {
   template<typename OutPacket, typename InPacket>
 
   class Server {
+  private:
+    WSADATA wsaData;
+    SOCKET _socket;
+    sockaddr_in serverAddr;
+    std::thread receivingThread;
+    std::map<std::string, sockaddr_in> clients;
+
+    std::function<void(std::string)> onConnectCallback;
+    std::function<void(std::string)> onDisconnectCallback;
   public:
     Server()
     {
@@ -47,7 +56,7 @@ namespace Network {
 
     void onReceive(std::function<void(std::string, InPacket)> callback)
     {
-      receivingThread = std::thread([]() {
+      receivingThread = std::thread([callback, this]() {
         while (true) {
           InPacket packet;
           sockaddr_in sender;
@@ -65,7 +74,7 @@ namespace Network {
 
           callback(clientKey, packet);
         }
-      });
+        });
     }
 
     void send(std::string id, OutPacket* packet)
@@ -101,15 +110,6 @@ namespace Network {
     }
 
   private:
-    WSADATA wsaData;
-    SOCKET _socket;
-    sockaddr_in serverAddr;
-    std::thread receivingThread;
-    std::map<std::string, sockaddr_in> clients;
-
-    std::function<void(std::string)> onConnectCallback;
-    std::function<void(std::string)> onDisconnectCallback;
-
     std::string getClientKey(sockaddr_in& addr)
     {
       char ipAddr[INET_ADDRSTRLEN];
