@@ -1,12 +1,8 @@
 #include <iostream>
-#include <map>
-#include <string>
 #include <chrono>
-#include <thread>
 
-#include "Server.hpp"
-
-#include "Globals.hpp"
+#include <Server/Globals.hpp>
+#include <Server/Server.hpp>
 
 const float playerSpeed = 200;
 

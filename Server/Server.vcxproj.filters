@@ -10,17 +10,13 @@
     <ClCompile Include="src\main.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="src\Network.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="src\Globals.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="src\Network.hpp" />
-    <ClInclude Include="src\Player.hpp" />
-    <ClInclude Include="src\Globals.hpp" />
-    <ClInclude Include="src\Server.hpp" />
+    <ClInclude Include="include\Server\Player.hpp" />
+    <ClInclude Include="include\Server\Globals.hpp" />
+    <ClInclude Include="include\Server\Server.hpp" />
   </ItemGroup>
 </Project>

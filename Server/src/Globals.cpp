@@ -1,3 +1,3 @@
-#include "Globals.hpp"
+#include <Server/Globals.hpp>
 
 Globals globals = {};
